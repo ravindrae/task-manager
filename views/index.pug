@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  br
+  .row
+    .col-6
+      h1 #{title}
+    .col-2
+    .col-2
+      select.form-select.col-1.task-status.float-end(name="priority",data-filter='type',aria-label='Default select example')
+        option(value='') All
+        option(value='0', selected= type == '0') Today's
+        option(value='1', selected= type == '1') Upcoming
+        option(value='2', selected= type == '2') Overdue
+    .col-2
+      select.form-select.col-1.task-status.float-end(name="priority",data-filter='status', aria-label='Default select example')
+        option(value='') All
+        option(value='0', selected= status == '0') Pending
+        option(value='1', selected= status == '1') Completed
+  if tasks.length == 0
+    .row
+      figure.text-center
+        figcaption.blockquote-footer
+          p No tasks found
+
+  .row
+    each task, i in tasks
+      .col-4
+        .card.shadow.mb-5.bg-body.rounded(style='width: 18rem;')
+          .card-body
+            h5.card-title #{task.title}
+            h6.card-subtitle.mb-2.text-muted #{moment(task.deadline).format('MMMM Do YYYY')} - 
+              if task.priority == 0
+                span.text-secondary #{priorities[task.priority]}
+              if task.priority == 1
+                span.text-warning #{priorities[task.priority]}
+              if task.priority == 2
+                span.text-danger #{priorities[task.priority]}
+            p.card-text #{task.description}
+            if task.status == 0
+              a.card-link(href='/tasks/edit/'+task._id) Edit
+              a.card-link.delete-task(href='#', data-id=task._id) Delete
+            if task.status == 1
+              span.badge.rounded-pill.bg-success.float-end Completed
+            else
+              span.mark-as-complete.badge.bg-light.text-dark.float-end(data-id=task._id, style="cursor:pointer") Mark as Complete

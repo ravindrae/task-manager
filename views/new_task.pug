@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 #{title}
+  form(method='POST', action='/tasks')
+    #form-group
+      label Title:
+      input.form-control(name='title', type='text')
+    #form-group
+      label Description:
+      textarea.form-control(name='description')
+    #form-group
+      label Deadline:
+      input.form-control(type='date',name='deadline')
+    #form-group
+      label Priority:
+      select.form-select(name="priority",aria-label='Default select example')
+        option(value='') Select priority
+        each val, key in priorities
+          option(value=key) #{val}
+
+    br
+    input.btn.btn-primary(type='submit',value='Submit')
