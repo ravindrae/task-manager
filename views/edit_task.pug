@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 #{title}
+  form(method='POST', action='/tasks/edit/'+task._id)
+    #form-group
+      label Title:
+      input.form-control(name='title', type='text', value=task.title)
+    #form-group
+      label Description:
+      textarea.form-control(name='body')= task.description
+    #form-group
+      label Deadline:
+      input.form-control(type='date',name='deadline', value=moment(task.deadline).format('YYYY-MM-DD'))
+    #form-group
+      label Priority:
+      select.form-select(name="priority",aria-label='Default select example')
+        option(value='') Select priority
+        each val, key in priorities
+          option(value=key, selected=key == task.priority) #{val}
+    br
+    input.btn.btn-primary(type='submit',value='Submit')
